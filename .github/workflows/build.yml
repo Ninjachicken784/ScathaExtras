@@ -14,26 +14,24 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Verify Structure
-        run: |
-          echo "Scanning for ScathaTracker.java..."
-          find . -name "ScathaTracker.java"
-          if [ -z "$(find . -name "ScathaTracker.java")" ]; then
-            echo "CRITICAL ERROR: ScathaTracker.java not found in the repo!"
-            exit 1
-          fi
+      - name: Setup Gradle 8.11
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.11'
 
-      - name: Build with Gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew clean build --no-daemon
+      - name: Build with System Gradle
+        # We use system 'gradle' to bypass any broken wrapper files in your repo
+        run: gradle clean build --no-daemon
 
-      - name: Verify Jar
+      - name: Final Verification
         run: |
           mkdir -p output
-          find build/ -name "*.jar" -exec cp {} output/ScathaExtras-1.21.10.jar \;
-          if [ ! -f output/ScathaExtras-1.21.10.jar ]; then
-            echo "BUILD FAILED: Compiler ran but no Jar was made."
+          find build/libs/ -name "*.jar" ! -name "*-dev.jar" -exec cp {} output/ScathaExtras-1.21.10.jar \;
+          if [ -f output/ScathaExtras-1.21.10.jar ]; then
+            echo "SUCCESS: Jar created."
+          else
+            echo "CRITICAL: Build finished but no jar was found in build/libs/"
+            ls -R build/
             exit 1
           fi
 
