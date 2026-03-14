@@ -5,9 +5,9 @@ plugins {
 version = "1.0.0"
 group = "net.scatha"
 
-// Hardcoding for 2026 stability
 repositories {
     maven { url = "https://maven.fabricmc.net/" }
+    maven { url = "https://maven.minecraftforge.net/" }
     mavenCentral()
 }
 
@@ -18,22 +18,11 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10"
 }
 
-// FORCE Gradle to look at the source even if the folders are weird
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java']
-        }
-        resources {
-            srcDirs = ['src/main/resources']
-        }
-    }
-}
-
-remapJar {
-    archiveFileName = "ScathaExtras-1.21.10.jar"
-}
-
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
+}
+
+// Explicitly name the output so the workflow can find it
+remapJar {
+    archiveFileName = "ScathaExtras-1.21.10.jar"
 }
