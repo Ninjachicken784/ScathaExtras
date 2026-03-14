@@ -1,7 +1,6 @@
 package ninjachicken784.scathaextras;
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.minecraft.text.Text;
 
 public class ChatListener {
     public static void register() {
