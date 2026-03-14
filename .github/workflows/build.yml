@@ -14,19 +14,29 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Setup Gradle 8.11
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '8.11'
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v3
 
-      - name: Build mod
-        # 'clean' forces a fresh jar; 'build' creates it
-        run: ./gradlew clean build
+      - name: Build with Gradle (Manual Mode)
+        # We are running 'assemble' which is the heavy lifting task for Jars
+        run: |
+          chmod +x gradlew
+          ./gradlew clean assemble --no-daemon --stacktrace
+
+      - name: Verify Jar Existence
+        # This checks if the file actually exists before trying to upload
+        run: |
+          echo "Checking build/libs/ folder..."
+          ls -R build/libs/
+          if [ -f build/libs/ScathaExtras-1.21.10.jar ]; then
+            echo "Success: Jar found."
+          else
+            echo "Error: Jar not found!"
+            exit 1
+          fi
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ScathaExtras-Jar
-          # Looking everywhere in the build folder for the jar
-          path: build/libs/*.jar
-          if-no-files-found: error
+          name: ScathaExtras-Final-Jar
+          path: build/libs/ScathaExtras-1.21.10.jar
