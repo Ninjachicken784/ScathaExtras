@@ -1,5 +1,4 @@
 plugins {
-    // Updated to 1.11.7 based on your specific error log requirement
     id 'fabric-loom' version '1.11.7'
 }
 
@@ -16,6 +15,11 @@ dependencies {
     
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+// Forces the jar to have a clean name
+jar {
+    archiveClassifier = ""
 }
 
 tasks.withType(JavaCompile).configureEach {
