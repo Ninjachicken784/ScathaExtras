@@ -3,14 +3,25 @@
   "id": "scathaextras",
   "version": "1.0.0",
   "name": "ScathaExtras",
+  "description": "Simple Scatha/Worm tracker HUD for Hypixel SkyBlock",
+  "authors": [
+    "Ninjachicken784"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Ninjachicken784/ScathaExtras",
+    "sources": "https://github.com/Ninjachicken784/ScathaExtras"
+  },
+  "license": "MIT",
+  "environment": "client",
   "entrypoints": {
-    "main": [
-      "net.scatha.ScathaTracker"
+    "client": [
+      "ninjachicken784.scathaextras.ScathaExtras"
     ]
   },
   "depends": {
-    "fabricloader": ">=0.17.3",
-    "minecraft": "1.21.10",
-    "fabric-api": "*"
+    "fabricloader": ">=0.18.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21.1",
+    "java": ">=21"
   }
 }
