@@ -1,5 +1,4 @@
 plugins {
-    // Upgraded Loom version to handle 1.21.10 tag errors
     id 'fabric-loom' version '1.9-SNAPSHOT'
 }
 
@@ -17,7 +16,7 @@ dependencies {
     mappings loom.officialMojangMappings() 
     modImplementation "net.fabricmc:fabric-loader:0.15.11"
     
-    // The exact stable build for 1.21.10
+    // The precise version for 1.21.10 stability
     modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10"
 }
 
