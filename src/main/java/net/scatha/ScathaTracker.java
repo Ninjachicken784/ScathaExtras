@@ -25,6 +25,7 @@ public class ScathaTracker implements ClientModInitializer {
             long hourAgo = System.currentTimeMillis() - 3600000;
             kills.removeIf(t -> t < hourAgo);
             
+            // Recoded for Official Mappings: Use 'font' instead of 'textRenderer'
             drawContext.drawText(client.font, "Worms/H: " + kills.size(), 10, 10, 0xFFAA00, true);
         });
     }
