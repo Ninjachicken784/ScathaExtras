@@ -12,12 +12,16 @@ repositories {
 }
 
 dependencies {
+    // 1. Target the correct game version
     minecraft "com.mojang:minecraft:1.21.10"
+
+    // 2. Use Official Mappings (replaces Yarn for 1.21.10 stability)
     mappings loom.officialMojangMappings() 
+
     modImplementation "net.fabricmc:fabric-loader:0.15.11"
-    
-    // THIS VERSION IS THE KEY FOR 1.21.10
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.136.0+1.21.10"
+
+    // 3. The precise stable API version for 1.21.10
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10"
 }
 
 tasks.withType(JavaCompile).configureEach {
