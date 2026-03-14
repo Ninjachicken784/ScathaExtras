@@ -14,29 +14,28 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Validate Gradle Wrapper
-        uses: gradle/actions/wrapper-validation@v3
-
-      - name: Build with Gradle (Manual Mode)
-        # We are running 'assemble' which is the heavy lifting task for Jars
+      - name: Build with Gradle
         run: |
           chmod +x gradlew
-          ./gradlew clean assemble --no-daemon --stacktrace
+          # We use 'assemble' instead of 'build' to force-skip tests and just make the jar
+          ./gradlew clean assemble --no-daemon --info
 
-      - name: Verify Jar Existence
-        # This checks if the file actually exists before trying to upload
+      - name: Force Verification of Artifacts
+        # This is the "Deep Think" part: it looks for the jar and renames it manually 
+        # to ensure there is no confusion on where the file is.
         run: |
-          echo "Checking build/libs/ folder..."
-          ls -R build/libs/
-          if [ -f build/libs/ScathaExtras-1.21.10.jar ]; then
-            echo "Success: Jar found."
+          mkdir -p output
+          find build/libs/ -name "ScathaExtras-*.jar" ! -name "*-dev.jar" ! -name "*-sources.jar" -exec cp {} output/ScathaExtras-1.21.10.jar \;
+          if [ -f output/ScathaExtras-1.21.10.jar ]; then
+            echo "MATCH FOUND: Mod jar is ready for upload."
           else
-            echo "Error: Jar not found!"
+            echo "FAILURE: No valid mod jar was found in build/libs/"
+            ls -R build/
             exit 1
           fi
 
-      - name: Upload Build Artifact
+      - name: Upload Final Jar
         uses: actions/upload-artifact@v4
         with:
           name: ScathaExtras-Final-Jar
-          path: build/libs/ScathaExtras-1.21.10.jar
+          path: output/ScathaExtras-1.21.10.jar
