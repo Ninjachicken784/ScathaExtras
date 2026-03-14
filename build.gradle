@@ -1,29 +1,27 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.9.2'
 }
 
 version = "1.0.0"
-group = "net.scatha"
+group = "com.ryr15.scathaextras"
 
 repositories {
-    maven { url "https://maven.fabricmc.net/" }
-    maven { url "https://maven.minecraftforge.net/" }
     mavenCentral()
 }
 
 dependencies {
-    // 1. Target the correct game version
-    minecraft "com.mojang:minecraft:1.21.10"
-
-    // 2. Use Official Mappings (replaces Yarn for 1.21.10 stability)
-    mappings loom.officialMojangMappings() 
-
-    modImplementation "net.fabricmc:fabric-loader:0.15.11"
-
-    // 3. The precise stable API version for 1.21.10
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
