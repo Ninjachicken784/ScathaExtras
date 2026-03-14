@@ -1,5 +1,6 @@
 plugins {
-    id 'fabric-loom' version '1.9.2'
+    // Upgraded to match the 1.11.7 requirement from your error log
+    id 'fabric-loom' version '1.11.7'
 }
 
 version = "1.0.0"
