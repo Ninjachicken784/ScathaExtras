@@ -1,16 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "scathaextras",
-  "version": "1.0.0",
+  "version": "${version}",
   "name": "ScathaExtras",
-  "description": "Scatha and Worm spawn tracker HUD for Hypixel SkyBlock Crystal Hollows",
-  "authors": [
-    "Ninjachicken784"
-  ],
-  "contact": {
-    "homepage": "https://github.com/Ninjachicken784/ScathaExtras",
-    "sources": "https://github.com/Ninjachicken784/ScathaExtras"
-  },
+  "description": "Worm/Scatha spawn tracker HUD for Hypixel SkyBlock",
+  "authors": ["Ninjachicken784"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
