@@ -1,31 +1,25 @@
-package net.scatha;
+name: Build Mod
+on: [push, pull_request]
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.Minecraft; 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ScathaTracker implements ClientModInitializer {
-    private static final List<Long> kills = new ArrayList<>();
-
-    @Override
-    public void onInitializeClient() {
-        ClientReceiveMessageEvents.CHAT.register((message, signed, sender, params, time) -> {
-            if (message.getString().contains("You hear the sound of something approaching...")) {
-                kills.add(System.currentTimeMillis());
-            }
-        });
-
-        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
-            Minecraft client = Minecraft.getInstance();
-            if (client.font == null) return; 
-
-            long hourAgo = System.currentTimeMillis() - 3600000;
-            kills.removeIf(t -> t < hourAgo);
-            
-            drawContext.drawText(client.font, "Worms/H: " + kills.size(), 10, 10, 0xFFAA00, true);
-        });
-    }
-}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.10
+      - name: Build with Gradle
+        run: gradle build --no-daemon --refresh-dependencies
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ScathaExtras-Jar
+          path: build/libs/*.jar
