@@ -1,5 +1,5 @@
 plugins {
-    // Upgraded to match the 1.11.7 requirement from your error log
+    // Updated to 1.11.7 based on your specific error log requirement
     id 'fabric-loom' version '1.11.7'
 }
 
