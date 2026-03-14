@@ -14,27 +14,30 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Build with Gradle
+      - name: Verify Structure
         run: |
-          chmod +x gradlew
-          # We use 'assemble' instead of 'build' to force-skip tests and just make the jar
-          ./gradlew clean assemble --no-daemon --info
-
-      - name: Force Verification of Artifacts
-        # This is the "Deep Think" part: it looks for the jar and renames it manually 
-        # to ensure there is no confusion on where the file is.
-        run: |
-          mkdir -p output
-          find build/libs/ -name "ScathaExtras-*.jar" ! -name "*-dev.jar" ! -name "*-sources.jar" -exec cp {} output/ScathaExtras-1.21.10.jar \;
-          if [ -f output/ScathaExtras-1.21.10.jar ]; then
-            echo "MATCH FOUND: Mod jar is ready for upload."
-          else
-            echo "FAILURE: No valid mod jar was found in build/libs/"
-            ls -R build/
+          echo "Scanning for ScathaTracker.java..."
+          find . -name "ScathaTracker.java"
+          if [ -z "$(find . -name "ScathaTracker.java")" ]; then
+            echo "CRITICAL ERROR: ScathaTracker.java not found in the repo!"
             exit 1
           fi
 
-      - name: Upload Final Jar
+      - name: Build with Gradle
+        run: |
+          chmod +x gradlew
+          ./gradlew clean build --no-daemon
+
+      - name: Verify Jar
+        run: |
+          mkdir -p output
+          find build/ -name "*.jar" -exec cp {} output/ScathaExtras-1.21.10.jar \;
+          if [ ! -f output/ScathaExtras-1.21.10.jar ]; then
+            echo "BUILD FAILED: Compiler ran but no Jar was made."
+            exit 1
+          fi
+
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: ScathaExtras-Final-Jar
