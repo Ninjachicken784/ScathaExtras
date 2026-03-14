@@ -19,8 +19,14 @@ jobs:
         with:
           gradle-version: '8.11'
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
       - name: Build mod
-        run: ./gradlew build
+        # 'clean' forces a fresh jar; 'build' creates it
+        run: ./gradlew clean build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ScathaExtras-Jar
+          # Looking everywhere in the build folder for the jar
+          path: build/libs/*.jar
+          if-no-files-found: error
