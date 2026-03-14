@@ -3,7 +3,7 @@ package net.scatha;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.Minecraft; // Name changed from MinecraftClient
+import net.minecraft.client.Minecraft; 
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +20,12 @@ public class ScathaTracker implements ClientModInitializer {
 
         HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
             Minecraft client = Minecraft.getInstance();
-            if (client.font == null) return; // Name changed from textRenderer
+            if (client.font == null) return; 
 
             long hourAgo = System.currentTimeMillis() - 3600000;
             kills.removeIf(t -> t < hourAgo);
             
-            // Fixed for Mojang Mappings 1.21.10
+            // DrawText for 1.21.10 Official Mappings
             drawContext.drawText(client.font, "Worms/H: " + kills.size(), 10, 10, 0xFFAA00, true);
         });
     }
