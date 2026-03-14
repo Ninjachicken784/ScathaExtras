@@ -3,39 +3,37 @@ plugins {
 }
 
 version = "1.0.0"
-group = "com.ryr15.scathaextras"
+group = "net.scatha"
 
-// 2026 Stable Repositories
+// Hardcoding for 2026 stability
 repositories {
     maven { url = "https://maven.fabricmc.net/" }
     mavenCentral()
 }
 
 dependencies {
-    // Hardcoded for total stability
     minecraft "com.mojang:minecraft:1.21.10"
     mappings "net.fabricmc:yarn:1.21.10+build.2:v2"
     modImplementation "net.fabricmc:fabric-loader:0.17.3"
     modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10"
 }
 
-// Fabric mods MUST be remapped to work in the game launcher
+// FORCE Gradle to look at the source even if the folders are weird
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+
 remapJar {
     archiveFileName = "ScathaExtras-1.21.10.jar"
 }
 
-// Ensure Java 21 is strictly enforced for Minecraft 1.21.10
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
-    it.options.encoding = "UTF-8"
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-
-// This helps the GitHub action find the right jar
-jar {
-    archiveFileName = "ScathaExtras-1.21.10-dev.jar"
 }
