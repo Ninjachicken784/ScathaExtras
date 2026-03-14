@@ -17,7 +17,8 @@ jobs:
         with:
           gradle-version: 8.10
       - name: Build with Gradle
-        run: gradle build --no-daemon --refresh-dependencies
+        # Added 'clean' to make sure no 1.21.1 junk is left behind
+        run: gradle clean build --no-daemon --refresh-dependencies
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
