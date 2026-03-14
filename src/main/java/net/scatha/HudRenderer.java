@@ -13,11 +13,11 @@ public class HudRenderer implements HudRenderCallback {
         if (client.player == null || client.world == null) return;
 
         TextRenderer renderer = client.textRenderer;
-        int x = 4, y = 4, color = 0xFFFFFF;
+        int x = 4, y = 4;
 
-        context.drawTextWithShadow(renderer, Text.literal("Worms/h: " + ScathaTracker.count), x, y, color);
+        context.drawTextWithShadow(renderer, Text.literal("Worms/h: " + ScathaTracker.count), x, y, 0xFFFFFF);
         y += 11;
-        context.drawTextWithShadow(renderer, Text.literal("Time: " + ScathaTracker.getTimeRunning()), x, y, color);
+        context.drawTextWithShadow(renderer, Text.literal("Time: " + ScathaTracker.getTimeRunning()), x, y, 0xFFFFFF);
         y += 11;
         context.drawTextWithShadow(renderer, Text.literal("Last: " + ScathaTracker.getTimeSinceLast()), x, y, 0xAAAAAA);
     }
