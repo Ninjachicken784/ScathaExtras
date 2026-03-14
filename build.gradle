@@ -1,29 +1,42 @@
 plugins {
     id 'fabric-loom' version '1.11.7'
+    id 'maven-publish'
 }
 
 version = "1.0.0"
 group = "com.ryr15.scathaextras"
 
+// Hardcoded versions to prevent property-reading failures
+def mcVersion = "1.21.10"
+def yarnMappings = "1.21.10+build.2"
+def loaderVersion = "0.17.3"
+def fabricVersion = "0.138.4+1.21.10"
+
 repositories {
     mavenCentral()
+    maven { url = "https://maven.fabricmc.net/" }
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    minecraft "com.mojang:minecraft:${mcVersion}"
+    mappings "net.fabricmc:yarn:${yarnMappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${loaderVersion}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricVersion}"
 }
 
-// Forces the jar to have a clean name
+// This is the specific task that turns code into a usable Minecraft mod
+remapJar {
+    archiveFileName = "ScathaExtras-1.21.10.jar"
+}
+
+// Force the jar task to stay in sync
 jar {
-    archiveClassifier = ""
+    archiveFileName = "ScathaExtras-1.21.10-dev.jar"
 }
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
+    it.options.encoding = "UTF-8"
 }
 
 java {
