@@ -1,39 +1,30 @@
 plugins {
     id 'fabric-loom' version '1.11.7'
-    id 'maven-publish'
 }
 
 version = "1.0.0"
 group = "com.ryr15.scathaextras"
 
-// Hardcoded versions to prevent property-reading failures
-def mcVersion = "1.21.10"
-def yarnMappings = "1.21.10+build.2"
-def loaderVersion = "0.17.3"
-def fabricVersion = "0.138.4+1.21.10"
-
+// 2026 Stable Repositories
 repositories {
-    mavenCentral()
     maven { url = "https://maven.fabricmc.net/" }
+    mavenCentral()
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${mcVersion}"
-    mappings "net.fabricmc:yarn:${yarnMappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${loaderVersion}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricVersion}"
+    // Hardcoded for total stability
+    minecraft "com.mojang:minecraft:1.21.10"
+    mappings "net.fabricmc:yarn:1.21.10+build.2:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.17.3"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.4+1.21.10"
 }
 
-// This is the specific task that turns code into a usable Minecraft mod
+// Fabric mods MUST be remapped to work in the game launcher
 remapJar {
     archiveFileName = "ScathaExtras-1.21.10.jar"
 }
 
-// Force the jar task to stay in sync
-jar {
-    archiveFileName = "ScathaExtras-1.21.10-dev.jar"
-}
-
+// Ensure Java 21 is strictly enforced for Minecraft 1.21.10
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
     it.options.encoding = "UTF-8"
@@ -42,4 +33,9 @@ tasks.withType(JavaCompile).configureEach {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+}
+
+// This helps the GitHub action find the right jar
+jar {
+    archiveFileName = "ScathaExtras-1.21.10-dev.jar"
 }
