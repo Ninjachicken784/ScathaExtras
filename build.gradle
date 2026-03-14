@@ -15,7 +15,9 @@ dependencies {
     minecraft "com.mojang:minecraft:1.21.10"
     mappings loom.officialMojangMappings() 
     modImplementation "net.fabricmc:fabric-loader:0.15.11"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.102.0+1.21.10"
+    
+    // THIS VERSION IS THE KEY FOR 1.21.10
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.136.0+1.21.10"
 }
 
 tasks.withType(JavaCompile).configureEach {
